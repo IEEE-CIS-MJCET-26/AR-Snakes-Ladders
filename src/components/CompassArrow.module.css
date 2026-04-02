@@ -1,0 +1,118 @@
+.wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Decorative rings */
+.ringOuter, .ringMid, .ringInner {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--c);
+  pointer-events: none;
+}
+.ringOuter {
+  inset: 0;
+  opacity: 0.15;
+  box-shadow: 0 0 30px var(--c, #00f5a0);
+  animation: ringPulse 3s ease-in-out infinite;
+}
+.ringMid {
+  inset: 16px;
+  opacity: 0.08;
+  animation: ringPulse 3s ease-in-out 0.5s infinite;
+}
+.ringInner {
+  inset: 32px;
+  opacity: 0.04;
+}
+
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.15; }
+  50%       { opacity: 0.25; }
+}
+
+/* Tick SVG */
+.ticks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Arrow wrapper — rotated in JS */
+.arrowWrap {
+  position: absolute;
+  width: 56px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 10px var(--glow));
+  will-change: transform;
+}
+
+.finalSpin {
+  animation: finalSpin 2s linear infinite !important;
+}
+
+@keyframes finalSpin { to { transform: rotate(360deg); } }
+
+.arrow {
+  width: 100%;
+  height: 100%;
+}
+
+/* Center hub */
+.hub {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 16px var(--c), 0 0 4px #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: hubPulse 2s ease-in-out infinite;
+}
+
+.hubInner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+}
+
+@keyframes hubPulse {
+  0%, 100% { box-shadow: 0 0 16px var(--c), 0 0 4px #fff; }
+  50%       { box-shadow: 0 0 28px var(--c), 0 0 8px #fff; }
+}
+
+/* Target bearing badge */
+.bearing {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10,14,30,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+.bearingVal {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--c);
+  letter-spacing: 0.1em;
+}
