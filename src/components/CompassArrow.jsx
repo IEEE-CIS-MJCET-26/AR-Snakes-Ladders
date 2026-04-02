@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { useArrowAngle } from '../hooks/useDeviceOrientation.js';
-import { getBearingLabel } from '../data/checkpoints.js';
+const BEARING_LABELS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW','N'];
+function getBearingLabel(degrees) {
+  return BEARING_LABELS[Math.round(degrees / 22.5) % 16];
+}
 import styles from './CompassArrow.module.css';
 
 /**
@@ -9,7 +11,7 @@ import styles from './CompassArrow.module.css';
  * based on device heading vs. target direction.
  */
 export default function CompassArrow({ targetDirection, userHeading, color, isFinal }) {
-  const angle = useArrowAngle(targetDirection, userHeading);
+  const angle = targetDirection !== null ? (targetDirection - userHeading) : 0;
   const wrapRef = useRef(null);
 
   // Update transform directly for 60fps without React re-renders
@@ -17,6 +19,8 @@ export default function CompassArrow({ targetDirection, userHeading, color, isFi
     if (wrapRef.current) {
       wrapRef.current.style.transform = `rotate(${angle}deg)`;
     }
+
+    
   }, [angle]);
 
   const targetLabel = targetDirection !== null

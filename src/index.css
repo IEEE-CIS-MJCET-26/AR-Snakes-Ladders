@@ -18,11 +18,14 @@
 
 html, body, #root {
   width: 100%;
-  height: 100%;
+  /* dvh = dynamic viewport height — shrinks/grows with mobile browser chrome */
+  height: 100dvh;
   overflow: hidden;
   background: #05070f;
   color: #f0f4ff;
   font-family: var(--font-ui);
+  /* prevent pull-to-refresh and bounce on iOS */
+  overscroll-behavior: none;
 }
 
 .app-container {
@@ -30,6 +33,11 @@ html, body, #root {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  /* prevent text selection in AR view */
+  user-select: none;
+  -webkit-user-select: none;
+  /* prevent callout on long-press (iOS) */
+  -webkit-touch-callout: none;
 }
 
 /* A-Frame overrides */

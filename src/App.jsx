@@ -1,73 +1,44 @@
-import { useEffect } from 'react';
-import { useARGame } from './hooks/useARGame.js';
-import { useDeviceOrientation } from './hooks/useDeviceOrientation.js';
+import { useState } from 'react';
 import SplashScreen from './components/SplashScreen.jsx';
 import HUD from './components/HUD.jsx';
 import VictoryScreen from './components/VictoryScreen.jsx';
 import MarkerPopup from './components/MarkerPopup.jsx';
-import ARScene from './components/ARScene.jsx';
+import './App.css';
 
-/**
- * Main Application Component
- */
 export default function App() {
-  const { heading, permissionState, requestPermission } = useDeviceOrientation();
-  const game = useARGame();
-
-  // Sync active marker visibility with A-Frame elements
-  // This bridges React's state to A-Frame's imperative API
-  useEffect(() => {
-    ['A', 'B', 'C', 'D', 'E'].forEach(id => {
-      const el = document.getElementById(`content-${id}`);
-      if (el) {
-        el.setAttribute('visible', game.activeMarker === id ? 'true' : 'false');
-      }
-    });
-  }, [game.activeMarker]);
+  // Use 'splash', 'ar', or 'victory' to preview the different UI components
+  const [phase, setPhase] = useState('splash'); 
 
   return (
-    <div className="app-container">
-      {/* Splash Screen */}
-      {game.phase === 'splash' && (
-        <SplashScreen
-          onLaunch={game.launch}
-          permissionState={permissionState}
-          requestPermission={requestPermission}
-        />
-      )}
-
-      {/* AR Mode (HUD and popups) */}
-      {game.phase === 'ar' && (
+    <div className="app-container" style={{ background: '#05070f' }}>
+      {phase === 'splash' && <SplashScreen onLaunch={() => setPhase('ar')} />}
+      
+      {phase === 'ar' && (
         <>
-          {/* Always render ARScene but maybe hide it, or just let it run. 
-              Actually it's better if it's rendered when 'ar' starts.
-              Since it relies on global A-Frame, we can conditionally render it. */}
-          <ARScene />
-          
-          <HUD
-            activeMarker={game.activeMarker}
-            visitedMarkers={game.visitedMarkers}
-            collectedDigits={game.collectedDigits}
-            progressPct={game.progressPct}
-            nextUnvisited={game.nextUnvisited}
-            userHeading={heading}
-            simulateNextMarker={game.simulateNextMarker}
-            demoIndex={game.demoIndex}
+          <HUD 
+            activeMarker="A"
+            visitedMarkers={new Set(['A'])}
+            collectedDigits={{ A: 7 }}
+            progressPct={25}
+            nextUnvisited="B"
+            userHeading={0}
+            simulateNextMarker={() => {}}
+            demoIndex={0}
           />
-          <MarkerPopup lastFound={game.lastFound} />
+          <MarkerPopup lastFound={{ cp: { 
+            name: 'Alpha Station', 
+            subtitle: 'Checkpoint 1 of 5',
+            type: 'digit',
+            digit: 7,
+            color: '#00f5a0',
+            gradient: 'linear-gradient(135deg, #00f5a0, #00d9f5)',
+            icon: '🔢',
+            nextHint: 'Head 60° (NNE) to find Beta Crossing'
+          }, timestamp: Date.now() }} />
         </>
       )}
 
-      {/* Victory Screen */}
-      {game.phase === 'victory' && (
-        <>
-          <ARScene /> {/* Keep AR in bg if we want, or remove it */}
-          <VictoryScreen
-            secretCode={game.secretCode}
-            onRestart={game.restart}
-          />
-        </>
-      )}
+      {phase === 'victory' && <VictoryScreen secretCode={[7, 3, 9]} onRestart={() => setPhase('splash')} />}
     </div>
   );
 }

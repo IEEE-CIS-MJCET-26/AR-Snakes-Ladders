@@ -1,59 +1,70 @@
+/* ═══════════════════════════════════════════════════════
+   CompassArrow.module.css  —  Mobile-first
+   Fixed 180px compass — fits every phone screen.
+   ═══════════════════════════════════════════════════════ */
+
 .wrap {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-/* Decorative rings */
-.ringOuter, .ringMid, .ringInner {
+/* ── Decorative rings ───────────────────────────────────── */
+.ringOuter,
+.ringMid,
+.ringInner {
   position: absolute;
   border-radius: 50%;
   border: 1px solid var(--c);
   pointer-events: none;
 }
+
 .ringOuter {
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   opacity: 0.15;
-  box-shadow: 0 0 30px var(--c, #00f5a0);
+  box-shadow: 0 0 24px var(--c, #00f5a0);
   animation: ringPulse 3s ease-in-out infinite;
 }
+
 .ringMid {
-  inset: 16px;
+  top: 14px; right: 14px; bottom: 14px; left: 14px;
   opacity: 0.08;
   animation: ringPulse 3s ease-in-out 0.5s infinite;
 }
+
 .ringInner {
-  inset: 32px;
+  top: 28px; right: 28px; bottom: 28px; left: 28px;
   opacity: 0.04;
 }
 
 @keyframes ringPulse {
   0%, 100% { opacity: 0.15; }
-  50%       { opacity: 0.25; }
+  50%       { opacity: 0.28; }
 }
 
-/* Tick SVG */
+/* ── Compass tick SVG ───────────────────────────────────── */
 .ticks {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
 }
 
-/* Arrow wrapper — rotated in JS */
+/* ── Rotating arrow ─────────────────────────────────────── */
 .arrowWrap {
   position: absolute;
-  width: 56px;
-  height: 100px;
+  width: 48px;
+  height: 86px;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 10px var(--glow));
+  filter: drop-shadow(0 0 8px var(--glow));
   will-change: transform;
 }
 
@@ -61,21 +72,23 @@
   animation: finalSpin 2s linear infinite !important;
 }
 
-@keyframes finalSpin { to { transform: rotate(360deg); } }
+@keyframes finalSpin {
+  to { transform: rotate(360deg); }
+}
 
 .arrow {
   width: 100%;
   height: 100%;
 }
 
-/* Center hub */
+/* ── Center hub ─────────────────────────────────────────── */
 .hub {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--c);
-  box-shadow: 0 0 16px var(--c), 0 0 4px #fff;
+  box-shadow: 0 0 14px var(--c), 0 0 4px #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,35 +97,34 @@
 }
 
 .hubInner {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 @keyframes hubPulse {
-  0%, 100% { box-shadow: 0 0 16px var(--c), 0 0 4px #fff; }
-  50%       { box-shadow: 0 0 28px var(--c), 0 0 8px #fff; }
+  0%, 100% { box-shadow: 0 0 14px var(--c), 0 0 4px #fff; }
+  50%       { box-shadow: 0 0 24px var(--c), 0 0 8px #fff; }
 }
 
-/* Target bearing badge */
+/* ── Bearing badge ──────────────────────────────────────── */
 .bearing {
   position: absolute;
-  bottom: -32px;
+  bottom: -28px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(10,14,30,0.8);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 0.3rem 0.85rem;
-  backdrop-filter: blur(10px);
+  background: rgba(10, 14, 30, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 9999px;
+  padding: 4px 12px;
   white-space: nowrap;
 }
 
 .bearingVal {
   font-family: 'Orbitron', monospace;
-  font-size: 0.68rem;
+  font-size: 10px;
   font-weight: 700;
   color: var(--c);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.10em;
 }
