@@ -1,16 +1,102 @@
-# React + Vite
+# Snakes and Ladders AR
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Snakes and Ladders AR is a mobile-first augmented reality board game built with React and Vite. Players scan printed barcode markers to trigger ladders, snakes, and special effects while the game keeps track of position, turns, and move history.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Barcode-driven gameplay with markers `0` through `4`
+- Five symbol types mapped to the board logic
+- Full move history with turn-by-turn tracking
+- Victory and game-over states
+- Printable marker sheet for the barcode cards
+- Mobile-friendly layout designed for phone use
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React `19.2.4`
+- React DOM `19.2.4`
+- Vite `8.0.1`
+- A-Frame `1.4.2` via CDN
+- AR.js via CDN
+- ESLint `9.39.4`
 
-## Expanding the ESLint configuration
+## Requirements
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js 18 or newer
+- A camera-enabled phone or tablet for AR gameplay
+- HTTPS or a secure local network connection for mobile camera access
+
+## Installation
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+3. Open the app in a browser.
+
+## Scripts
+
+- `npm run dev` - Start the Vite development server
+- `npm run build` - Build the production bundle
+- `npm run preview` - Preview the production build locally
+- `npm run lint` - Run ESLint across the project
+
+## How To Play
+
+1. Open the app on a phone with camera access.
+2. Start the game from the splash screen.
+3. Point the camera at one of the printed barcode markers.
+4. Each scanned barcode applies its effect immediately.
+5. Reach position `100` to win.
+
+## Barcode Mapping
+
+- `0` - Big Ladder, move forward 10 spaces
+- `1` - Small Ladder, move forward 3 spaces
+- `2` - Small Snake, move back 5 spaces
+- `3` - Medium Snake, return to start
+- `4` - Instant Kill, game over
+
+## Marker Printing
+
+Printable marker sheets are available in [public/markers/print-markers.html](public/markers/print-markers.html).
+
+The generated barcode images used by the sheet are stored in [public/markers/generated](public/markers/generated).
+
+## Project Structure
+
+```text
+src/
+	App.jsx
+	App.css
+	index.css
+	main.jsx
+	components/
+		ARScene.jsx
+		GameOverScreen.jsx
+		HUD_new.jsx
+		MarkerPopup.jsx
+		SplashScreen.jsx
+		VictoryScreen.jsx
+	hooks/
+		useDeviceOrientation.js
+		useGameState.js
+public/
+	markers/
+		print-markers.html
+		generated/
+```
+
+## Notes
+
+- The AR camera layer is configured for mobile browser use and depends on camera permissions.
+- The game uses only barcode markers `0` to `4`; higher values are not part of the current build.
+- The project is intentionally kept in plain JavaScript and React for a lightweight mobile experience.
