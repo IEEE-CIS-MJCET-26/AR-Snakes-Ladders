@@ -1,6 +1,12 @@
+<div align="center">
+
 # Snakes and Ladders AR
 
-Snakes and Ladders AR is a mobile-first augmented reality board game built with React and Vite. Players scan printed barcode markers to trigger ladders, snakes, and special effects while the game keeps track of position, turns, and move history.
+Mobile-first augmented reality board game built with React and Vite.
+
+Players scan printed barcode markers to trigger ladders, snakes, and special effects while the game keeps track of position, turns, and move history.
+
+</div>
 
 ## Features
 
@@ -13,12 +19,14 @@ Snakes and Ladders AR is a mobile-first augmented reality board game built with 
 
 ## Tech Stack
 
-- React `19.2.4`
-- React DOM `19.2.4`
-- Vite `8.0.1`
-- A-Frame `1.4.2` via CDN
-- AR.js via CDN
-- ESLint `9.39.4`
+| Icon | Technology | Version          | Notes                     |
+| ---- | ---------- | ---------------- | ------------------------- |
+| ◇    | React      | `19.2.4`         | UI layer                  |
+| ◆    | React DOM  | `19.2.4`         | Browser rendering         |
+| ▣    | Vite       | `8.0.1`          | Dev server and build tool |
+| ▲    | A-Frame    | `1.4.2`          | Loaded via CDN            |
+| △    | AR.js      | Latest CDN build | Barcode-based AR tracking |
+| ⬚    | ESLint     | `9.39.4`         | Code quality checks       |
 
 ## Requirements
 
