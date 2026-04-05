@@ -19,14 +19,14 @@ Players scan printed barcode markers to trigger ladders, snakes, and special eff
 
 ## Tech Stack
 
-| Icon | Technology | Version          | Notes                     |
-| ---- | ---------- | ---------------- | ------------------------- |
-| ◇    | React      | `19.2.4`         | UI layer                  |
-| ◆    | React DOM  | `19.2.4`         | Browser rendering         |
-| ▣    | Vite       | `8.0.1`          | Dev server and build tool |
-| ▲    | A-Frame    | `1.4.2`          | Loaded via CDN            |
-| △    | AR.js      | Latest CDN build | Barcode-based AR tracking |
-| ⬚    | ESLint     | `9.39.4`         | Code quality checks       |
+| Icon                                                                                                      | Technology | Version          | Notes                     |
+| --------------------------------------------------------------------------------------------------------- | ---------- | ---------------- | ------------------------- |
+| <img src="https://api.iconify.design/logos:react.svg" alt="React" width="18" />                           | React      | `19.2.4`         | UI layer                  |
+| <img src="https://api.iconify.design/logos:react.svg" alt="React DOM" width="18" />                       | React DOM  | `19.2.4`         | Browser rendering         |
+| <img src="https://api.iconify.design/logos:vitejs.svg" alt="Vite" width="18" />                           | Vite       | `8.0.1`          | Dev server and build tool |
+| <img src="https://api.iconify.design/simple-icons:aframe.svg?color=%23ef2d5e" alt="A-Frame" width="18" /> | A-Frame    | `1.4.2`          | Loaded via CDN            |
+| <img src="https://api.iconify.design/mdi:augmented-reality.svg?color=%230a0e1f" alt="AR.js" width="18" /> | AR.js      | Latest CDN build | Barcode-based AR tracking |
+| <img src="https://api.iconify.design/logos:eslint.svg" alt="ESLint" width="18" />                         | ESLint     | `9.39.4`         | Code quality checks       |
 
 ## Requirements
 
