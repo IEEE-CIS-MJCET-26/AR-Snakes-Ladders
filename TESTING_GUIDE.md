@@ -1,51 +1,105 @@
-# 🧪 TrailBlaze AR: Mobile Testing Guide
+# Snakes and Ladders AR: Testing Guide
 
-Everything you requested has been implemented! To test this properly on a real iPhone or Android device, follow these steps:
+This guide covers manual testing for the current barcode-based Snakes and Ladders AR build.
 
-## 1. Start the Dev Server
+## 1. Build Check
 
-The development server is now configured with the `@vitejs/plugin-basic-ssl` plugin. This generates a temporary SSL certificate.
+Run a production build first to confirm the project compiles:
 
-- When you run `npm run dev` (already started for you), Vite will bind to your local IP address over `https://`.
-- Look at your terminal output for a line like:
-  ```
-  ➜  Network: https://192.168.1.XX:5173/
-  ```
+```bash
+npm run build
+```
 
-## 2. Connect Your Phone
+Expected result: build completes without errors.
 
-1. Ensure your phone is connected to the **same Wi-Fi network** as your computer.
-2. Open your phone's browser (Safari for iOS, Chrome for Android).
-3. Type in the `https://` Network URL from the terminal exactly as shown.
-4. **Bypass the Privacy Warning:** Because the SSL certificate is self-signed just for local dev, your browser will warn you.
-   - **Chrome:** Click `Advanced` -> `Proceed to 192.168... (unsafe)`
-   - **Safari:** Click `Show Details` -> `visit this website`
+## 2. Start The Dev Server
 
-## 3. Print or Open the AR Markers
+Use Vite directly so host and port flags are accepted:
 
-To test the game flow, you need the physical markers. You can print them or just open them on your desktop monitor while pointing your phone at them.
+```bash
+npx vite --host 0.0.0.0 --port 5173
+```
 
-Primary option (recommended):
+Look for the network URL in terminal output, for example:
 
-- Open the local print sheet at `/markers/print-markers.html` from your running app URL.
-- Example: `https://192.168.1.XX:5173/markers/print-markers.html`
+```text
+Network: https://192.168.x.x:5173/
+```
 
-Here are the markers used for each checkpoint:
+## 3. Open On Mobile
 
-1. **Checkpoint A (Alpha Station)** - HIRO marker: `/markers/generated/hiro.png`
-   _Fallback also supported in-app:_ **Barcode 3**: `/markers/generated/barcode-3.png`
-2. **Checkpoint B (Beta Crossing)** - **Barcode 4**: `/markers/generated/barcode-4.png`
-3. **Checkpoint C (Charlie Peak)** - **Barcode 0**: `/markers/generated/barcode-0.png`
-4. **Checkpoint D (Delta Ridge)** - **Barcode 1**: `/markers/generated/barcode-1.png`
-5. **Checkpoint E (Echo Summit)** - **Barcode 2**: `/markers/generated/barcode-2.png`
+1. Connect phone and computer to the same Wi-Fi.
+2. Open the `https://` network URL on the phone.
+3. Accept the local certificate warning when prompted.
+4. Allow camera and motion permissions.
 
-## 4. Test the Pipeline
+## 4. Open Marker Sheet
 
-1. **Launch AR:** Tap the "Launch TrailBlaze AR" button on the splash screen.
-2. **Permissions:**
-   - On iOS, a prompt will appear asking for **Device Motion** access. **You must allow this** for the compass arrow to work.
-   - The browser will ask for **Camera** access. Allow it.
-3. **Scan Markers:** Point your phone camera at the Hiro marker first. Ensure the popup appears and checkpoint A is marked as found.
-4. **Test Compass:** Rotate your phone towards the target direction indicated. Verify the arrow rotates dynamically.
+Open the printable marker page:
 
-_(Note: If you deny device motion on iOS, the app catches this fallback gracefully, but the arrow will remain locked to 0° instead of crashing.)_
+- `/markers/print-markers.html`
+
+Markers used by this build:
+
+- `barcode-0.png`
+- `barcode-1.png`
+- `barcode-2.png`
+- `barcode-3.png`
+- `barcode-4.png`
+
+No other barcodes are used.
+
+## 5. Gameplay Validation
+
+From the app splash screen, press Start Game and validate the following:
+
+1. Camera frame appears in the center square.
+2. Scanning each barcode triggers exactly one move update.
+3. Move history updates after every successful scan.
+4. Last-hit popup appears with correct symbol text.
+5. Position rules match the mapping below.
+
+Symbol mapping:
+
+- Barcode `0`: Big Ladder (`+10`)
+- Barcode `1`: Small Ladder (`+3`)
+- Barcode `2`: Small Snake (`-5`)
+- Barcode `3`: Medium Snake (back to start)
+- Barcode `4`: Instant Kill (game over)
+
+## 6. End-State Tests
+
+Run both end conditions:
+
+1. Win path: reach position `100` and verify Victory screen stats.
+2. Lose path: scan barcode `4` and verify Game Over screen stats.
+3. Restart from each end screen and confirm state resets to splash.
+
+## 7. Regression Checklist
+
+- No references to legacy checkpoint flow remain in gameplay.
+- Only barcode values `0` to `4` are active.
+- Marker page references only existing generated marker assets.
+- App remains usable in mobile portrait layout.
+
+## 8. Common Issues
+
+### Black camera square but scanning works
+
+Cause: preview layer rendering issue in mobile browser.
+
+Actions:
+
+1. Close the browser tab completely and reopen.
+2. Re-grant camera permission.
+3. Retry from splash screen.
+
+### Dev server host/port args ignored
+
+Cause: using `npm run dev -- --host ...` with unsupported npm arg forwarding behavior.
+
+Use:
+
+```bash
+npx vite --host 0.0.0.0 --port 5173
+```
