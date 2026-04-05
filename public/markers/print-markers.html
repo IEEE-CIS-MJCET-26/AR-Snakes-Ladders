@@ -1,354 +1,393 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TrailBlaze AR – Print Markers</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #fff;
-      font-family: 'Space Grotesk', sans-serif;
-      color: #111;
-      padding: 2rem;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #fff;
+        font-family: system-ui, sans-serif;
+        color: #111;
+        padding: 2rem;
+      }
 
-    h1 {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.6rem;
-      text-align: center;
-      margin-bottom: 0.4rem;
-      color: #0a0e1f;
-    }
+      h1 {
+        font-family: system-ui, sans-serif;
+        font-size: 1.6rem;
+        text-align: center;
+        margin-bottom: 0.4rem;
+        color: #0a0e1f;
+      }
 
-    .intro {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #555;
-      margin-bottom: 2rem;
-    }
+      .intro {
+        text-align: center;
+        font-size: 0.85rem;
+        color: #555;
+        margin-bottom: 2rem;
+      }
 
-    .markers-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2.5rem;
-      max-width: 900px;
-      margin: 0 auto 3rem;
-    }
+      .markers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2.5rem;
+        max-width: 900px;
+        margin: 0 auto 3rem;
+      }
 
-    .marker-card {
-      border: 2px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 1.5rem;
-      text-align: center;
-      page-break-inside: avoid;
-    }
+      .marker-card {
+        border: 2px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        page-break-inside: avoid;
+      }
 
-    .marker-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      font-family: 'Orbitron', monospace;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: white;
-      margin-bottom: 0.6rem;
-    }
+      .marker-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        font-family: "Orbitron", monospace;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.6rem;
+      }
 
-    .marker-title {
-      font-family: 'Orbitron', monospace;
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-    }
+      .marker-title {
+        font-family: system-ui, sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
 
-    .marker-meta {
-      font-size: 0.78rem;
-      color: #888;
-      margin-bottom: 1rem;
-    }
+      .marker-meta {
+        font-size: 0.78rem;
+        color: #888;
+        margin-bottom: 1rem;
+      }
 
-    /* The actual AR markers */
-    .ar-marker-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f9fafb;
-      border-radius: 10px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
+      /* The actual AR markers */
+      .ar-marker-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f9fafb;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
 
-    /* Hiro marker (built-in AR.js preset) – replicated as image embed */
-    .marker-img {
-      width: 180px;
-      height: 180px;
-      image-rendering: pixelated;
-      display: block;
-    }
+      /* Marker preview tiles */
+      .marker-img {
+        width: 180px;
+        height: 180px;
+        image-rendering: pixelated;
+        display: block;
+      }
 
-    .marker-instructions {
-      font-size: 0.75rem;
-      color: #444;
-      line-height: 1.6;
-      text-align: left;
-      background: #f3f4f6;
-      border-radius: 8px;
-      padding: 0.6rem 0.8rem;
-    }
+      .marker-instructions {
+        font-size: 0.75rem;
+        color: #444;
+        line-height: 1.6;
+        text-align: left;
+        background: #f3f4f6;
+        border-radius: 8px;
+        padding: 0.6rem 0.8rem;
+      }
 
-    .marker-instructions strong {
-      display: block;
-      margin-bottom: 0.2rem;
-      font-size: 0.78rem;
-    }
+      .marker-instructions strong {
+        display: block;
+        margin-bottom: 0.2rem;
+        font-size: 0.78rem;
+      }
 
-    .type-tag {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
-    }
+      .type-tag {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5rem;
+      }
 
-    .instructions-section {
-      max-width: 720px;
-      margin: 0 auto 2rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 1.5rem 2rem;
-    }
+      .instructions-section {
+        max-width: 720px;
+        margin: 0 auto 2rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+      }
 
-    .instructions-section h2 {
-      font-family: 'Orbitron', monospace;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      color: #0a0e1f;
-    }
+      .instructions-section h2 {
+        font-family: system-ui, sans-serif;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #0a0e1f;
+      }
 
-    .step {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 0.8rem;
-      align-items: flex-start;
-    }
+      .step {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0.8rem;
+        align-items: flex-start;
+      }
 
-    .step-num {
-      min-width: 24px; height: 24px;
-      border-radius: 50%;
-      background: #0a0e1f;
-      color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-      margin-top: 0.1rem;
-    }
+      .step-num {
+        min-width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #0a0e1f;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        margin-top: 0.1rem;
+      }
 
-    .step p { font-size: 0.82rem; line-height: 1.55; color: #333; }
+      .step p {
+        font-size: 0.82rem;
+        line-height: 1.55;
+        color: #333;
+      }
 
-    .code-hint {
-      background: #fef9ec;
-      border: 1px solid #f5c400;
-      border-radius: 10px;
-      padding: 0.8rem 1rem;
-      font-size: 0.82rem;
-      color: #7a5800;
-      margin-top: 0.8rem;
-    }
+      .code-hint {
+        background: #fef9ec;
+        border: 1px solid #f5c400;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        font-size: 0.82rem;
+        color: #7a5800;
+        margin-top: 0.8rem;
+      }
 
-    @media print {
-      body { padding: 1rem; }
-      .no-print { display: none; }
-      .marker-card { border-color: #ccc; }
-      .ar-marker-wrapper { background: white; }
-    }
-  </style>
-</head>
-<body>
+      @media print {
+        body {
+          padding: 1rem;
+        }
+        .no-print {
+          display: none;
+        }
+        .marker-card {
+          border-color: #ccc;
+        }
+        .ar-marker-wrapper {
+          background: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Snakes and Ladders Markers</h1>
+    <p class="intro">
+      Print this page, cut out the markers, and place them in your play area.
+      This game uses barcode values 0 through 4 for symbol effects.
+    </p>
 
-  <h1>TrailBlaze AR</h1>
-  <p class="intro">Print this page, cut out the markers, and place them around your space to play!</p>
-
-  <div class="markers-grid">
-
-    <!-- Marker A: HIRO -->
-    <div class="marker-card">
-      <div class="marker-badge" style="background:#00a877;">A</div>
-      <div class="marker-title">Checkpoint A – Alpha Station</div>
-      <div class="marker-meta">Preset: <strong>HIRO</strong> (built-in AR.js)</div>
-      <span class="type-tag" style="background:#dcfce7;color:#166534;">🔢 Digit Only – gives you: 7</span>
-      <div class="ar-marker-wrapper">
-        <!-- HIRO Marker (standard AR.js Hiro pattern) -->
-        <img
-          class="marker-img"
-          src="https://raw.githack.com/AR-js-org/AR.js/master/data/images/hiro.png"
-          alt="HIRO AR Marker"
-          crossorigin="anonymous"
-        />
+    <div class="markers-grid">
+      <!-- Marker 0: Big Ladder -->
+      <div class="marker-card">
+        <div class="marker-badge" style="background: #22c55e">0</div>
+        <div class="marker-title">🪜 Big Ladder</div>
+        <div class="marker-meta">
+          Barcode: <strong>0</strong> (AR.js matrix marker)
+        </div>
+        <span class="type-tag" style="background: #dcfce7; color: #166534"
+          >LADDER – Move +10 Spaces</span
+        >
+        <div class="ar-marker-wrapper">
+          <img
+            class="marker-img"
+            src="./generated/barcode-0.png"
+            alt="Barcode 0 AR Marker"
+          />
+        </div>
+        <div class="marker-instructions">
+          <strong>What happens:</strong>
+          Scanning this marker moves your token
+          <strong>10 spaces forward</strong> on the board.
+        </div>
       </div>
-      <div class="marker-instructions">
-        <strong>What happens:</strong>
-        Shows digit <strong>"7"</strong> floating above the marker.<br/>
-        Digit is collected into your clue bank.
+
+      <!-- Marker 1: Small Ladder -->
+      <div class="marker-card">
+        <div class="marker-badge" style="background: #86efac">1</div>
+        <div class="marker-title">🪜 Small Ladder</div>
+        <div class="marker-meta">
+          Barcode: <strong>1</strong> (AR.js matrix marker)
+        </div>
+        <span class="type-tag" style="background: #dcfce7; color: #166534"
+          >LADDER – Move +3 Spaces</span
+        >
+        <div class="ar-marker-wrapper">
+          <img
+            class="marker-img"
+            src="./generated/barcode-1.png"
+            alt="Barcode 1 AR Marker"
+          />
+        </div>
+        <div class="marker-instructions">
+          <strong>What happens:</strong>
+          Scanning this marker moves your token
+          <strong>3 spaces forward</strong> on the board.
+        </div>
+      </div>
+
+      <!-- Marker 2: Small Snake -->
+      <div class="marker-card">
+        <div class="marker-badge" style="background: #ef4444">2</div>
+        <div class="marker-title">🐍 Small Snake</div>
+        <div class="marker-meta">
+          Barcode: <strong>2</strong> (AR.js matrix marker)
+        </div>
+        <span class="type-tag" style="background: #fee2e2; color: #991b1b"
+          >SNAKE – Move -5 Spaces</span
+        >
+        <div class="ar-marker-wrapper">
+          <img
+            class="marker-img"
+            src="./generated/barcode-2.png"
+            alt="Barcode 2 AR Marker"
+          />
+        </div>
+        <div class="marker-instructions">
+          <strong>What happens:</strong>
+          Scanning this marker moves your token
+          <strong>5 spaces backward</strong> on the board.
+        </div>
+      </div>
+
+      <!-- Marker 3: Medium Snake -->
+      <div class="marker-card">
+        <div class="marker-badge" style="background: #dc2626">3</div>
+        <div class="marker-title">🐍 Medium Snake</div>
+        <div class="marker-meta">
+          Barcode: <strong>3</strong> (AR.js matrix marker)
+        </div>
+        <span class="type-tag" style="background: #fee2e2; color: #991b1b"
+          >SNAKE – Return to Start</span
+        >
+        <div class="ar-marker-wrapper">
+          <img
+            class="marker-img"
+            src="./generated/barcode-3.png"
+            alt="Barcode 3 AR Marker"
+          />
+        </div>
+        <div class="marker-instructions">
+          <strong>What happens:</strong>
+          Scanning this marker sends your token
+          <strong>back to position 0</strong> (the start).
+        </div>
+      </div>
+
+      <!-- Marker 4: Instant Kill -->
+      <div class="marker-card" style="border-color: #000; border-width: 3px">
+        <div class="marker-badge" style="background: #000">4</div>
+        <div class="marker-title">☠️ Instant Kill</div>
+        <div class="marker-meta">
+          Barcode: <strong>4</strong> (AR.js matrix marker)
+        </div>
+        <span class="type-tag" style="background: #f3f4f6; color: #000"
+          >GAME OVER – You Lose</span
+        >
+        <div class="ar-marker-wrapper">
+          <img
+            class="marker-img"
+            src="./generated/barcode-4.png"
+            alt="Barcode 4 AR Marker"
+          />
+        </div>
+        <div class="marker-instructions">
+          <strong>What happens:</strong>
+          Scanning this marker <strong>ends the game immediately</strong>. Game
+          Over!
+        </div>
       </div>
     </div>
 
-    <!-- Marker B: KANJI -->
-    <div class="marker-card">
-      <div class="marker-badge" style="background:#c9a000;">B</div>
-      <div class="marker-title">Checkpoint B – Beta Crossing</div>
-      <div class="marker-meta">Preset: <strong>KANJI</strong> (built-in AR.js)</div>
-      <span class="type-tag" style="background:#fef9c3;color:#854d0e;">🧭 Arrow Only – points toward 120°</span>
-      <div class="ar-marker-wrapper">
-        <img
-          class="marker-img"
-          src="https://raw.githack.com/AR-js-org/AR.js/master/data/images/kanji.png"
-          alt="KANJI AR Marker"
-          crossorigin="anonymous"
-        />
+    <!-- Instructions -->
+    <div class="instructions-section">
+      <h2>📋 How to Play</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <p>
+          Print this page (use your browser's Print function). Cut out the 8
+          marker cards.
+        </p>
       </div>
-      <div class="marker-instructions">
-        <strong>What happens:</strong>
-        Shows a <strong>yellow arrow</strong> that dynamically rotates as you turn your phone,
-        pointing toward 120° (ESE direction to Marker C).
+      <div class="step">
+        <div class="step-num">2</div>
+        <p>
+          Place markers around your home or space, roughly in the directions
+          described (or anywhere for testing).
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p>
+          Open <code>index.html</code> on your phone using a local dev server
+          (or ngrok for HTTPS). Tap <strong>Launch AR Hunt</strong>.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p>
+          Point your phone camera at a printed marker. This route uses barcode
+          values 0 through 7 in sequence.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <p>
+          Watch the arrow rotate as you physically turn your phone. Follow it to
+          the next marker.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <p>
+          No physical markers? Use the
+          <strong>🎭 Simulate Marker</strong> button in the app to test all 8
+          checkpoints.
+        </p>
+      </div>
+
+      <div class="code-hint">
+        🔑 <strong>Secret Code:</strong> Collect all 4 digits (from Markers A,
+        C, F and H) to reveal the treasure code: <strong>7 – 3 – 4 – 8</strong>
       </div>
     </div>
 
-    <!-- Marker C: letterA pattern -->
-    <div class="marker-card">
-      <div class="marker-badge" style="background:#7c3aed;">C</div>
-      <div class="marker-title">Checkpoint C – Charlie Peak</div>
-      <div class="marker-meta">Pattern: <strong>LETTER-A</strong> (custom)</div>
-      <span class="type-tag" style="background:#f3e8ff;color:#6b21a8;">✨ Arrow + Digit – gives you: 3</span>
-      <div class="ar-marker-wrapper">
-        <!-- Self-contained SVG marker that AR.js can detect via custom pattern -->
-        <svg width="180" height="180" viewBox="0 0 180 180">
-          <rect width="180" height="180" fill="white"/>
-          <rect x="20" y="20" width="140" height="140" fill="black"/>
-          <rect x="30" y="30" width="120" height="120" fill="white"/>
-          <!-- Letter A pattern in black -->
-          <rect x="55" y="40" width="70" height="10" fill="black"/>
-          <rect x="45" y="50" width="15" height="80" fill="black"/>
-          <rect x="120" y="50" width="15" height="80" fill="black"/>
-          <rect x="55" y="85" width="70" height="10" fill="black"/>
-        </svg>
-      </div>
-      <div class="ar-marker-wrapper" style="font-size:0.72rem;color:#6b7280;padding:.5rem;background:transparent;">
-        ⚠️ Demo tip: For this custom marker, use the <strong>🎭 Simulate Marker</strong> button in the app instead.
-      </div>
-      <div class="marker-instructions">
-        <strong>What happens:</strong>
-        Shows a <strong>purple arrow</strong> pointing toward 200° (SSW to Marker D) +
-        digit <strong>"3"</strong> floating alongside.
-      </div>
+    <div style="text-align: center; margin-top: 2rem">
+      <button
+        class="no-print"
+        onclick="window.print()"
+        style="
+          padding: 0.7rem 2rem;
+          background: #0a0e1f;
+          color: white;
+          border: none;
+          border-radius: 30px;
+          font-family: &quot;Orbitron&quot;, monospace;
+          font-size: 0.85rem;
+          cursor: pointer;
+          letter-spacing: 0.05em;
+        "
+      >
+        🖨️ Print Markers
+      </button>
     </div>
-
-    <!-- Marker D: letterB pattern -->
-    <div class="marker-card">
-      <div class="marker-badge" style="background:#c2410c;">D</div>
-      <div class="marker-title">Checkpoint D – Delta Ridge</div>
-      <div class="marker-meta">Pattern: <strong>LETTER-B</strong> (custom)</div>
-      <span class="type-tag" style="background:#fff7ed;color:#9a3412;">🔥 Arrow Only – points toward 300°</span>
-      <div class="ar-marker-wrapper">
-        <svg width="180" height="180" viewBox="0 0 180 180">
-          <rect width="180" height="180" fill="white"/>
-          <rect x="20" y="20" width="140" height="140" fill="black"/>
-          <rect x="30" y="30" width="120" height="120" fill="white"/>
-          <!-- Letter B pattern -->
-          <rect x="45" y="40" width="15" height="100" fill="black"/>
-          <rect x="60" y="40" width="55" height="10" fill="black"/>
-          <rect x="60" y="83" width="55" height="10" fill="black"/>
-          <rect x="60" y="130" width="55" height="10" fill="black"/>
-          <rect x="115" y="50" width="15" height="33" fill="black"/>
-          <rect x="115" y="93" width="15" height="37" fill="black"/>
-        </svg>
-      </div>
-      <div class="marker-instructions">
-        <strong>What happens:</strong>
-        Shows an <strong>orange arrow</strong> pointing toward 300° (WNW) toward the final Marker E.
-      </div>
-    </div>
-
-    <!-- Marker E: letterC pattern -->
-    <div class="marker-card" style="border-color:#ec4899;border-width:3px;">
-      <div class="marker-badge" style="background:#be185d;">E</div>
-      <div class="marker-title">Checkpoint E – Echo Summit 🏆</div>
-      <div class="marker-meta">Pattern: <strong>LETTER-C</strong> (custom)</div>
-      <span class="type-tag" style="background:#fdf2f8;color:#831843;">🏆 FINAL – Arrow + Digit – gives you: 9</span>
-      <div class="ar-marker-wrapper">
-        <svg width="180" height="180" viewBox="0 0 180 180">
-          <rect width="180" height="180" fill="white"/>
-          <rect x="20" y="20" width="140" height="140" fill="black"/>
-          <rect x="30" y="30" width="120" height="120" fill="white"/>
-          <!-- Letter C pattern -->
-          <rect x="45" y="40" width="90" height="12" fill="black"/>
-          <rect x="45" y="128" width="90" height="12" fill="black"/>
-          <rect x="45" y="52" width="15" height="76" fill="black"/>
-        </svg>
-      </div>
-      <div class="marker-instructions">
-        <strong>What happens:</strong>
-        Shows a <strong>pink arrow</strong> (spins – this is the end!) +
-        digit <strong>"9"</strong>.<br/>
-        After detecting this marker, the <strong>Victory screen</strong> appears
-        with your collected code: <strong>7 • 3 • 9</strong>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Instructions -->
-  <div class="instructions-section">
-    <h2>📋 How to Play</h2>
-    <div class="step">
-      <div class="step-num">1</div>
-      <p>Print this page (use your browser's Print function). Cut out the 5 marker cards.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <p>Place markers around your home or space, roughly in the directions described (or anywhere for testing).</p>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <p>Open <code>index.html</code> on your phone using a local dev server (or ngrok for HTTPS). Tap <strong>Launch AR Hunt</strong>.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <p>Point your phone camera at a printed marker. Marker A (HIRO) and Marker B (KANJI) work out of the box!</p>
-    </div>
-    <div class="step">
-      <div class="step-num">5</div>
-      <p>Watch the arrow rotate as you physically turn your phone. Follow it to the next marker.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">6</div>
-      <p>No physical markers? Use the <strong>🎭 Simulate Marker</strong> button in the app to test all 5 checkpoints.</p>
-    </div>
-
-    <div class="code-hint">
-      🔑 <strong>Secret Code:</strong> Collect all 3 digits (from Markers A, C and E) to reveal the treasure code: <strong>7 – 3 – 9</strong>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:2rem;">
-    <button class="no-print" onclick="window.print()" style="
-      padding: 0.7rem 2rem;
-      background: #0a0e1f;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      font-family: 'Orbitron',monospace;
-      font-size: 0.85rem;
-      cursor: pointer;
-      letter-spacing: 0.05em;
-    ">🖨️ Print Markers</button>
-  </div>
-
-</body>
+  </body>
 </html>

@@ -1,6 +1,6 @@
-import styles from "./VictoryScreen.module.css";
+import styles from "./GameOverScreen.module.css";
 
-export default function VictoryScreen({
+export default function GameOverScreen({
   position,
   turnNumber,
   moveHistory,
@@ -10,8 +10,8 @@ export default function VictoryScreen({
     <section className={styles.screen}>
       <div className={styles.card}>
         <p className={styles.kicker}>Result</p>
-        <h1 className={styles.title}>You Win</h1>
-        <p className={styles.message}>You reached square 100.</p>
+        <h1 className={styles.title}>Game Over</h1>
+        <p className={styles.message}>You hit the instant-kill snake.</p>
 
         <div className={styles.stats}>
           <div>
@@ -29,7 +29,7 @@ export default function VictoryScreen({
         </div>
 
         <button className={styles.button} onClick={onRestart}>
-          Play Again
+          Try Again
         </button>
       </div>
     </section>

@@ -1,44 +1,85 @@
-import { useState } from 'react';
-import SplashScreen from './components/SplashScreen.jsx';
-import HUD from './components/HUD.jsx';
-import VictoryScreen from './components/VictoryScreen.jsx';
-import MarkerPopup from './components/MarkerPopup.jsx';
-import './App.css';
+import SplashScreen from "./components/SplashScreen.jsx";
+import HUD from "./components/HUD_new.jsx";
+import VictoryScreen from "./components/VictoryScreen.jsx";
+import GameOverScreen from "./components/GameOverScreen.jsx";
+import MarkerPopup from "./components/MarkerPopup.jsx";
+import ARScene from "./components/ARScene.jsx";
+import useGameState from "./hooks/useGameState.js";
+import useDeviceOrientation from "./hooks/useDeviceOrientation.js";
+import "./App.css";
 
 export default function App() {
-  // Use 'splash', 'ar', or 'victory' to preview the different UI components
-  const [phase, setPhase] = useState('splash'); 
+  const {
+    phase,
+    position,
+    turnNumber,
+    moveHistory,
+    lastSymbolHit,
+    debugLog,
+    onMarkerDetected,
+    onMarkerLost,
+    startGame,
+    restartGame,
+  } = useGameState();
+
+  const { permissionState, requestPermission } = useDeviceOrientation();
 
   return (
-    <div className="app-container" style={{ background: '#05070f' }}>
-      {phase === 'splash' && <SplashScreen onLaunch={() => setPhase('ar')} />}
-      
-      {phase === 'ar' && (
+    <div
+      className="app-container"
+      style={{ background: phase === "playing" ? "transparent" : "#f5f5f2" }}
+    >
+      {phase === "splash" && (
+        <SplashScreen
+          onLaunch={startGame}
+          permissionState={permissionState}
+          requestPermission={requestPermission}
+        />
+      )}
+
+      {phase === "playing" && (
         <>
-          <HUD 
-            activeMarker="A"
-            visitedMarkers={new Set(['A'])}
-            collectedDigits={{ A: 7 }}
-            progressPct={25}
-            nextUnvisited="B"
-            userHeading={0}
-            simulateNextMarker={() => {}}
-            demoIndex={0}
+          {debugLog && <div className="debug-overlay">{debugLog}</div>}
+
+          <ARScene
+            onMarkerDetected={onMarkerDetected}
+            onMarkerLost={onMarkerLost}
           />
-          <MarkerPopup lastFound={{ cp: { 
-            name: 'Alpha Station', 
-            subtitle: 'Checkpoint 1 of 5',
-            type: 'digit',
-            digit: 7,
-            color: '#00f5a0',
-            gradient: 'linear-gradient(135deg, #00f5a0, #00d9f5)',
-            icon: '🔢',
-            nextHint: 'Head 60° (NNE) to find Beta Crossing'
-          }, timestamp: Date.now() }} />
+
+          <HUD
+            position={position}
+            turnNumber={turnNumber}
+            moveHistory={moveHistory}
+            lastSymbolHit={lastSymbolHit}
+          />
+
+          <MarkerPopup lastSymbolHit={lastSymbolHit} />
+
+          {permissionState === "denied" && (
+            <div className="permission-warning">
+              Motion access denied. Restart app and grant permission.
+            </div>
+          )}
         </>
       )}
 
-      {phase === 'victory' && <VictoryScreen secretCode={[7, 3, 9]} onRestart={() => setPhase('splash')} />}
+      {phase === "won" && (
+        <VictoryScreen
+          position={position}
+          turnNumber={turnNumber}
+          moveHistory={moveHistory}
+          onRestart={restartGame}
+        />
+      )}
+
+      {phase === "gameover" && (
+        <GameOverScreen
+          position={position}
+          turnNumber={turnNumber}
+          moveHistory={moveHistory}
+          onRestart={restartGame}
+        />
+      )}
     </div>
   );
 }
