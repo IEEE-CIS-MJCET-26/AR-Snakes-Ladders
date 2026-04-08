@@ -3,9 +3,9 @@
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  color: #17211b;
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
 }
 
 .topBar,
@@ -16,32 +16,33 @@
 }
 
 .topBar {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #d7ddd7;
+  margin: 6px;
+  padding: 6px;
+  border: 1px solid var(--line);
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--panel);
+  box-shadow: 0 4px 12px #030712;
 }
 
 .brand {
   font-family: var(--font-heading);
-  color: #1b4332;
-  font-size: 20px;
+  color: var(--ink);
+  font-size: 14px;
   line-height: 1.1;
 }
 
 .statRow {
-  margin-top: 10px;
+  margin-top: 6px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
 }
 
 .statCard {
-  border: 1px solid #e1e7e1;
+  border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 8px;
-  background: #fafcf9;
+  padding: 6px;
+  background: var(--bg-alt);
 }
 
 .statLabel {
@@ -49,42 +50,46 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #5a645d;
+  color: var(--muted);
   font-weight: 700;
 }
 
 .statValue {
   display: block;
   margin-top: 2px;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 800;
-  color: #17211b;
+  color: var(--ink);
 }
 
 .centerHint {
   align-self: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
   justify-self: center;
-  border: 1px solid #d7ddd7;
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: #ffffff;
-  padding: 8px 14px;
-  font-size: 13px;
+  background: var(--panel);
+  padding: 10px 16px;
+  font-size: 14px;
   font-weight: 700;
-  color: #2c3d34;
+  color: var(--ink);
   text-align: center;
   max-width: calc(100vw - 24px);
 }
 
 .bottomPanel {
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #d7ddd7;
+  margin: 6px;
+  padding: 6px;
+  border: 1px solid var(--line);
   border-radius: 12px;
-  background: #ffffff;
-  max-height: min(32dvh, 240px);
+  background: var(--panel);
+  max-height: min(18dvh, 130px);
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 8px;
+  gap: 4px;
+  margin-top: auto;
+  box-shadow: 0 4px 12px #030712;
 }
 
 .panelHeader {
@@ -94,55 +99,55 @@
 }
 
 .panelHeader h2 {
-  font-size: 12px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #5a645d;
+  color: var(--muted);
 }
 
 .panelHeader span {
-  font-size: 12px;
-  color: #5a645d;
+  font-size: 10px;
+  color: var(--muted);
   font-weight: 700;
 }
 
 .historyList {
   overflow-y: auto;
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .historyItem {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
-  border: 1px solid #e1e7e1;
+  border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 6px 8px;
-  background: #fafcf9;
+  padding: 4px 6px;
+  background: var(--bg-alt);
 }
 
 .turn {
-  font-size: 12px;
-  color: #5a645d;
+  font-size: 11px;
+  color: var(--muted);
   font-weight: 700;
 }
 
 .path {
-  font-size: 13px;
-  color: #17211b;
+  font-size: 12px;
+  color: var(--ink);
   font-weight: 700;
 }
 
 .symbol {
-  font-size: 12px;
-  color: #2c3d34;
+  font-size: 11px;
+  color: var(--muted);
   text-align: right;
 }
 
 .empty {
-  color: #5a645d;
+  color: var(--muted);
   font-size: 13px;
   text-align: center;
   padding: 10px 0;
@@ -151,11 +156,11 @@
 .lastHit {
   justify-self: center;
   margin-bottom: max(8px, env(safe-area-inset-bottom));
-  border: 1px solid #d7ddd7;
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: #ffffff;
+  background: var(--panel);
   padding: 7px 12px;
   font-size: 12px;
   font-weight: 700;
-  color: #1b4332;
+  color: var(--ink);
 }

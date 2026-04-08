@@ -5,22 +5,23 @@
   display: grid;
   place-items: center;
   padding: 20px;
-  background: rgba(245, 245, 242, 0.96);
+  background: linear-gradient(180deg, var(--bg), var(--bg-alt));
 }
 
 .card {
   width: min(100%, 460px);
-  border: 1px solid #e7d7d7;
+  border: 1px solid var(--line);
   border-radius: 14px;
-  background: #ffffff;
+  background: var(--panel);
   padding: 24px;
+  box-shadow: 0 6px 16px #030712;
 }
 
 .kicker {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #7a4f57;
+  color: var(--muted);
   font-weight: 700;
 }
 
@@ -28,13 +29,13 @@
   margin-top: 4px;
   font-family: var(--font-heading);
   font-size: clamp(28px, 8vw, 42px);
-  color: #7f1d1d;
+  color: var(--alert);
   line-height: 1.1;
 }
 
 .message {
   margin-top: 8px;
-  color: #6c3f47;
+  color: var(--muted);
 }
 
 .stats {
@@ -45,10 +46,10 @@
 }
 
 .stats div {
-  border: 1px solid #f1e3e3;
+  border: 1px solid var(--line);
   border-radius: 10px;
   padding: 10px 8px;
-  background: #fff8f8;
+  background: var(--bg-alt);
   display: grid;
   gap: 2px;
 }
@@ -57,23 +58,40 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #7a4f57;
+  color: var(--muted);
 }
 
 .stats strong {
   font-size: 18px;
-  color: #7f1d1d;
+  color: var(--ink);
 }
 
 .button {
   margin-top: 16px;
   width: 100%;
-  border: 1px solid #7f1d1d;
+  border: 1px solid var(--ladder);
   border-radius: 10px;
   padding: 12px;
-  background: #7f1d1d;
-  color: #ffffff;
+  background: linear-gradient(120deg, #22d3ee, #3b82f6);
+  color: #0b1220;
   font-size: 15px;
   font-weight: 800;
   cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.button:hover {
+  background: linear-gradient(120deg, #3de5ff, #5a9bff);
+}
+
+.button:active {
+  background: linear-gradient(120deg, #1ebdd6, #2f67c4);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--ladder);
+  outline-offset: 2px;
 }

@@ -13,7 +13,7 @@ export default function HUD({
         <div className={styles.statRow}>
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Position</span>
-            <span className={styles.statValue}>{position}/100</span>
+            <span className={styles.statValue}>{position}/16</span>
           </div>
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Turn</span>
@@ -21,10 +21,6 @@ export default function HUD({
           </div>
         </div>
       </header>
-
-      <section className={styles.centerHint}>
-        <p>Scan a barcode marker to take your next move.</p>
-      </section>
 
       <section className={styles.bottomPanel}>
         <div className={styles.panelHeader}>

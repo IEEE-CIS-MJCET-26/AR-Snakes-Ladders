@@ -1,14 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,700&display=swap");
 
 :root {
-  --bg: #f5f5f2;
-  --panel: #ffffff;
-  --ink: #17211b;
-  --muted: #5a645d;
-  --line: #d7ddd7;
-  --ladder: #2d6a4f;
-  --snake: #b23a48;
-  --alert: #7f1d1d;
+  --bg: #0b1220;
+  --bg-alt: #0f172a;
+  --panel: #111827;
+  --ink: #e5e7eb;
+  --muted: #9ca3af;
+  --line: #1f2937;
+  --ladder: #22d3ee;
+  --snake: #3b82f6;
+  --alert: #ec4899;
+  --disabled: #4b5563;
   --font-ui: "Manrope", system-ui, sans-serif;
   --font-heading: "Fraunces", Georgia, serif;
 }
@@ -27,7 +29,13 @@ body,
   width: 100%;
   height: 100dvh;
   overflow: hidden;
-  background: var(--bg);
+  background:
+    radial-gradient(
+      1200px 700px at 50% 16%,
+      rgba(34, 211, 238, 0.08),
+      transparent 72%
+    ),
+    linear-gradient(180deg, var(--bg), var(--bg-alt));
   color: var(--ink);
   font-family: var(--font-ui);
   overscroll-behavior: none;

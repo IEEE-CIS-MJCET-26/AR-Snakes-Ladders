@@ -11,7 +11,7 @@ export default function VictoryScreen({
       <div className={styles.card}>
         <p className={styles.kicker}>Result</p>
         <h1 className={styles.title}>You Win</h1>
-        <p className={styles.message}>You reached square 100.</p>
+        <p className={styles.message}>You reached square 16.</p>
 
         <div className={styles.stats}>
           <div>

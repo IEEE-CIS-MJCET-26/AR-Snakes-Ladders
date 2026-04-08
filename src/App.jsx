@@ -27,7 +27,7 @@ export default function App() {
   return (
     <div
       className="app-container"
-      style={{ background: phase === "playing" ? "transparent" : "#f5f5f2" }}
+      style={{ background: phase === "playing" ? "transparent" : "var(--bg)" }}
     >
       {phase === "splash" && (
         <SplashScreen

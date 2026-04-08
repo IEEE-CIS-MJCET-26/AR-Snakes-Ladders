@@ -4,22 +4,24 @@ import { useState, useCallback, useRef } from "react";
  * SNAKES & LADDERS - Symbol Configuration
  *
  * Barcode 0-4 map to 5 symbol types:
- * - 0: Big Ladder (+10 spaces)
+ * - 0: Big Ladder (+5 spaces)
  * - 1: Small Ladder (+3 spaces)
- * - 2: Small Snake (-5 spaces)
+ * - 2: Small Snake (-3 spaces)
  * - 3: Medium Snake (return to start = 0)
- * - 4: Instant Kill (game over)
+ * - 4: Big Snake (-6 spaces)
  */
+
+const WINNING_SCORE = 16;
 
 export const SYMBOLS = {
   0: {
     barcode: 0,
     name: "Big Ladder",
     type: "ladder",
-    effect: 10,
+    effect: 5,
     icon: "🪜",
     color: "#22c55e",
-    description: "Jump forward 10 spaces!",
+    description: "Jump forward 5 spaces!",
   },
   1: {
     barcode: 1,
@@ -34,10 +36,10 @@ export const SYMBOLS = {
     barcode: 2,
     name: "Small Snake",
     type: "snake",
-    effect: -5,
+    effect: -3,
     icon: "🐍",
     color: "#ef4444",
-    description: "Ouch! Go back 5 spaces",
+    description: "Ouch! Go back 3 spaces",
   },
   3: {
     barcode: 3,
@@ -50,12 +52,12 @@ export const SYMBOLS = {
   },
   4: {
     barcode: 4,
-    name: "Instant Kill",
+    name: "Big Snake",
     type: "snake",
-    effect: "gameOver",
-    icon: "☠️",
+    effect: -6,
+    icon: "🐍",
     color: "#000000",
-    description: "Game Over!",
+    description: "Big setback! Go back 6 spaces",
   },
 };
 
@@ -71,14 +73,14 @@ export const BOARD_LAYOUT = {
   22: 1, // Small Ladder at 22
   28: 2, // Small Snake at 28
   35: 0, // Big Ladder at 35
-  41: 4, // Instant Kill at 41
+  41: 4, // Big Snake at 41
   48: 2, // Small Snake at 48
   54: 0, // Big Ladder at 54
   60: 3, // Medium Snake at 60
   67: 1, // Small Ladder at 67
   71: 2, // Small Snake at 71
   79: 0, // Big Ladder at 79
-  85: 4, // Instant Kill at 85
+  85: 4, // Big Snake at 85
   92: 1, // Small Ladder at 92
   98: 3, // Medium Snake at 98
 };
@@ -90,7 +92,7 @@ export const BOARD_LAYOUT = {
 export default function useGameState() {
   // ── Game State ──
   const [phase, setPhase] = useState("splash"); // splash | playing | won | gameover
-  const [position, setPosition] = useState(0); // Current position on board (0-100)
+  const [position, setPosition] = useState(0); // Current position on board (0-WINNING_SCORE)
   const [turnNumber, setTurnNumber] = useState(0); // Total turns played
   const [moveHistory, setMoveHistory] = useState([]); // Array of all moves
   const [gameStatus, setGameStatus] = useState(null); // won | lost | null
@@ -126,20 +128,16 @@ export default function useGameState() {
 
       if (barcodeValue === 0 || barcodeValue === 1) {
         // Ladder: move forward
-        newPosition = Math.min(position + symbol.effect, 100);
+        newPosition = Math.min(position + symbol.effect, WINNING_SCORE);
         symbolEffect = `+${symbol.effect}`;
-      } else if (barcodeValue === 2) {
-        // Small Snake: move back
+      } else if (barcodeValue === 2 || barcodeValue === 4) {
+        // Snake: move back
         newPosition = Math.max(0, position + symbol.effect);
         symbolEffect = `${symbol.effect}`;
       } else if (barcodeValue === 3) {
         // Medium Snake: return to start
         newPosition = 0;
         symbolEffect = "Back to start";
-      } else if (barcodeValue === 4) {
-        // Instant Kill: game over
-        newPosition = position; // Don't move
-        symbolEffect = "Game Over!";
       }
 
       // Record the move
@@ -160,15 +158,10 @@ export default function useGameState() {
       setLastSymbolHit(symbol);
 
       // Check win/lose conditions
-      if (newPosition >= 100) {
+      if (newPosition >= WINNING_SCORE) {
         setGameStatus("won");
         setTimeout(() => setPhase("won"), 1500);
-        setDebugLog("🎉 You reached 100! You Won!");
-      } else if (barcodeValue === 4) {
-        // Instant Kill
-        setGameStatus("lost");
-        setTimeout(() => setPhase("gameover"), 1500);
-        setDebugLog("💀 Game Over!");
+        setDebugLog(`🎉 You reached ${WINNING_SCORE}! You Won!`);
       } else {
         setDebugLog(`${symbol.name}: ${symbolEffect}`);
       }

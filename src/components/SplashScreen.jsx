@@ -16,10 +16,10 @@ export default function SplashScreen({
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <p className={styles.kicker}>Barcode AR Board Game</p>
+        <p className={styles.kicker}>AR Board Game</p>
         <h1 className={styles.title}>Snakes and Ladders</h1>
         <p className={styles.subtitle}>
-          Scan one barcode at a time to move. Reach square 100 to win.
+          Scan one barcode at a time to move. Reach square 16 to win.
         </p>
 
         <div className={styles.legend}>
