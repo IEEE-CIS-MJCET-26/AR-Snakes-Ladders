@@ -1,5 +1,7 @@
 import { SYMBOLS } from "../hooks/useGameState.js";
 import styles from "./SplashScreen.module.css";
+import adsophosLogo from "../assets/logos/adsophos.png";
+import whiteLogo from "../assets/logos/white-logo.png";
 
 export default function SplashScreen({
   onLaunch,
@@ -15,6 +17,14 @@ export default function SplashScreen({
 
   return (
     <div className={styles.screen}>
+      <div className={styles.logoHeader}>
+        <img src={adsophosLogo} alt="Adsophos" className={styles.headerLogo} />
+        <img
+          src={whiteLogo}
+          alt="IEEE CIS Logo"
+          className={styles.headerLogo}
+        />
+      </div>
       <div className={styles.card}>
         <p className={styles.kicker}>AR Board Game</p>
         <h1 className={styles.title}>Snakes and Ladders</h1>
@@ -40,6 +50,7 @@ export default function SplashScreen({
           Camera and motion sensor permissions are required.
         </p>
       </div>
+      <p className={styles.copyright}>© 2026 IEEE CIS MJCET. All rights reserved.</p>
     </div>
   );
 }
