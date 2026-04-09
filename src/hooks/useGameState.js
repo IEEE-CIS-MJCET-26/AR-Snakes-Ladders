@@ -8,7 +8,7 @@ import { useState, useCallback, useRef } from "react";
  * - 1: Small Ladder (+3 spaces)
  * - 2: Small Snake (-3 spaces)
  * - 3: Medium Snake (return to start = 0)
- * - 4: Big Snake (-6 spaces)
+ * - 4: Bonus Ladder (+1 space)
  */
 
 const WINNING_SCORE = 16;
@@ -52,12 +52,12 @@ export const SYMBOLS = {
   },
   4: {
     barcode: 4,
-    name: "Big Snake",
-    type: "snake",
-    effect: -6,
-    icon: "🐍",
-    color: "#000000",
-    description: "Big setback! Go back 6 spaces",
+    name: "Bonus Ladder",
+    type: "ladder",
+    effect: 1,
+    icon: "🪜",
+    color: "#22c55e",
+    description: "Bonus move! Jump forward 1 space",
   },
 };
 
@@ -73,14 +73,14 @@ export const BOARD_LAYOUT = {
   22: 1, // Small Ladder at 22
   28: 2, // Small Snake at 28
   35: 0, // Big Ladder at 35
-  41: 4, // Big Snake at 41
+  41: 4, // Bonus Ladder at 41
   48: 2, // Small Snake at 48
   54: 0, // Big Ladder at 54
   60: 3, // Medium Snake at 60
   67: 1, // Small Ladder at 67
   71: 2, // Small Snake at 71
   79: 0, // Big Ladder at 79
-  85: 4, // Big Snake at 85
+  85: 4, // Bonus Ladder at 85
   92: 1, // Small Ladder at 92
   98: 3, // Medium Snake at 98
 };
@@ -126,11 +126,11 @@ export default function useGameState() {
       let newPosition = position;
       let symbolEffect = null;
 
-      if (barcodeValue === 0 || barcodeValue === 1) {
+      if (barcodeValue === 0 || barcodeValue === 1 || barcodeValue === 4) {
         // Ladder: move forward
         newPosition = Math.min(position + symbol.effect, WINNING_SCORE);
         symbolEffect = `+${symbol.effect}`;
-      } else if (barcodeValue === 2 || barcodeValue === 4) {
+      } else if (barcodeValue === 2) {
         // Snake: move back
         newPosition = Math.max(0, position + symbol.effect);
         symbolEffect = `${symbol.effect}`;

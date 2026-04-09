@@ -1,4 +1,3 @@
-import { SYMBOLS } from "../hooks/useGameState.js";
 import styles from "./SplashScreen.module.css";
 import adsophosLogo from "../assets/logos/adsophos.png";
 import whiteLogo from "../assets/logos/white-logo.png";
@@ -32,16 +31,6 @@ export default function SplashScreen({
           Scan one barcode at a time to move. Reach square 16 to win.
         </p>
 
-        <div className={styles.legend}>
-          {Object.values(SYMBOLS).map((symbol) => (
-            <div key={symbol.barcode} className={styles.legendItem}>
-              <div className={styles.code}>Code {symbol.barcode}</div>
-              <div className={styles.name}>{symbol.name}</div>
-              <div className={styles.effect}>{symbol.description}</div>
-            </div>
-          ))}
-        </div>
-
         <button className={styles.button} onClick={handleStart}>
           Start Game
         </button>
@@ -50,7 +39,9 @@ export default function SplashScreen({
           Camera and motion sensor permissions are required.
         </p>
       </div>
-      <p className={styles.copyright}>© 2026 IEEE CIS MJCET. All rights reserved.</p>
+      <p className={styles.copyright}>
+        © 2026 IEEE CIS MJCET. All rights reserved.
+      </p>
     </div>
   );
 }

@@ -27,6 +27,7 @@ const ARScene = memo(({ onMarkerDetected, onMarkerLost }) => {
       "../../model/anaconda.glb",
       import.meta.url,
     ).href;
+    const ladderModelUrl = new URL("../../ladder.glb", import.meta.url).href;
 
     const createSceneNode = (tagName, attributes = {}) => {
       const node = document.createElement(tagName);
@@ -45,17 +46,23 @@ const ARScene = memo(({ onMarkerDetected, onMarkerLost }) => {
       rotation = "-90 90 0",
       bobToY = 0.06,
       turnToY = 8,
+      staticModel = false,
       startHidden = false,
       onModelLoaded,
       onModelError,
     }) => {
-      const anchorEl = createSceneNode("a-entity", {
+      const anchorAttributes = {
         position,
         rotation,
         visible: startHidden ? "false" : "true",
-        animation__bob: `property: position; dir: alternate; dur: 1500; easing: easeInOutSine; loop: true; to: 0 ${bobToY} 0`,
-        animation__turn: `property: rotation; dir: alternate; dur: 1300; easing: easeInOutSine; loop: true; to: -90 ${turnToY} 0`,
-      });
+      };
+
+      if (!staticModel) {
+        anchorAttributes.animation__bob = `property: position; dir: alternate; dur: 1500; easing: easeInOutSine; loop: true; to: 0 ${bobToY} 0`;
+        anchorAttributes.animation__turn = `property: rotation; dir: alternate; dur: 1300; easing: easeInOutSine; loop: true; to: -90 ${turnToY} 0`;
+      }
+
+      const anchorEl = createSceneNode("a-entity", anchorAttributes);
 
       const modelEl = createSceneNode("a-entity", {
         "gltf-model": `url(${modelUrl})`,
@@ -302,6 +309,24 @@ const ARScene = memo(({ onMarkerDetected, onMarkerLost }) => {
       );
       markerEl.appendChild(boxEl);
 
+      if (mcfg.value === 0 || mcfg.value === 1 || mcfg.value === 4) {
+        const ladderSizeByBarcode = {
+          0: 1.3,
+          1: 1.2,
+          4: 1.1,
+        };
+
+        const ladderModel = createCenteredGltfModel({
+          modelUrl: ladderModelUrl,
+          targetSize: ladderSizeByBarcode[mcfg.value] ?? 0.62,
+          position: "0 0 0",
+          rotation: "-90 0 0",
+          staticModel: true,
+        });
+
+        markerEl.appendChild(ladderModel.anchorEl);
+      }
+
       if (mcfg.value === 2) {
         const fallbackSmallSnake = createSnakeModel({
           scale: "0.6 0.6 0.6",
@@ -317,11 +342,10 @@ const ARScene = memo(({ onMarkerDetected, onMarkerLost }) => {
 
         const centeredSmallModel = createCenteredGltfModel({
           modelUrl: bigSnakeModelUrl,
-          targetSize: 0.36,
+          targetSize: 0.65,
           position: "0 0 0",
           rotation: "-90 90 0",
-          bobToY: 0.04,
-          turnToY: 8,
+          staticModel: true,
           startHidden: true,
           onModelLoaded: () => {
             fallbackSmallSnake.setAttribute("visible", "false");
@@ -351,11 +375,10 @@ const ARScene = memo(({ onMarkerDetected, onMarkerLost }) => {
 
         const centeredModel = createCenteredGltfModel({
           modelUrl: bigSnakeModelUrl,
-          targetSize: 0.58,
+          targetSize: 0.95,
           position: "0 0 0",
           rotation: "-90 90 0",
-          bobToY: 0.05,
-          turnToY: 8,
+          staticModel: true,
           startHidden: true,
           onModelLoaded: () => {
             fallbackSnake.setAttribute("visible", "false");
@@ -366,22 +389,6 @@ const ARScene = memo(({ onMarkerDetected, onMarkerLost }) => {
         });
 
         markerEl.appendChild(centeredModel.anchorEl);
-      }
-
-      if (mcfg.value === 4) {
-        markerEl.appendChild(
-          createSnakeModel({
-            scale: "1.25 1.25 1.25",
-            bodyColor: "#3f3f46",
-            bellyColor: "#d4d4d8",
-            accentColor: "#dc2626",
-            segmentCount: 10,
-            bobHeight: 0.14,
-            rotationSpeed: 1200,
-            hasHood: true,
-            hoodColor: "#52525b",
-          }),
-        );
       }
 
       sceneEl.appendChild(markerEl);

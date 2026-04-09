@@ -47,8 +47,6 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-
-
 .kicker {
   color: var(--muted);
   font-size: 12px;
@@ -70,45 +68,6 @@
   font-size: 15px;
   color: var(--muted);
   line-height: 1.5;
-}
-
-.legend {
-  margin-top: 18px;
-  display: grid;
-  gap: 10px;
-}
-
-.legendItem {
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: var(--bg-alt);
-}
-
-.code {
-  display: inline-block;
-  padding: 2px 8px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #0b1220;
-  font-size: 11px;
-  color: var(--ladder);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 700;
-}
-
-.name {
-  margin-top: 2px;
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--ink);
-}
-
-.effect {
-  margin-top: 2px;
-  font-size: 13px;
-  color: var(--muted);
 }
 
 .button {
@@ -149,8 +108,9 @@
 }
 
 .copyright {
-  margin-top: 24px;
-  margin-bottom: 4px;
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-top: 24px;
   font-size: 11px;
   color: var(--muted);
   text-align: center;
